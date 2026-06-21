@@ -8,6 +8,7 @@ I've performed the necessary tasks and prepared a report containing:
 
 Commands:
 mkdir ProjectWorkspace
+cd ProjectWorkspace
 mkdir Documents Reports
 
 Observation: The mkdir command was used to create the ProjectWorkspace directory along with the Documents and Reports subdirectories. The command executed successfully and created the required workspace structure for storing project files and documentation.
@@ -63,7 +64,6 @@ Observation: The umask value of 0002 indicates that newly created files and dire
 5. Explanation of how permissions protect project data
 
 Conclusion: Linux permissions help protect project data by restricting access to authorized users. By changing the workspace permissions to 750, only the owner has full control, group members have limited access, and other users are completely denied access. This reduces the risk of unauthorized viewing, modification, or deletion of project files.
-
 
 
 Check the screenshots showing permissions and ownership.
