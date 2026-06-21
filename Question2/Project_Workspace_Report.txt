@@ -1,0 +1,84 @@
+Question 2 – Secure Project Workspace Setup
+
+A project team requires a secure workspace for storing project files and documentation. Create the workspace and configure appropriate permissions.
+
+Perform the necessary tasks and prepare a report containing:
+
+1. Directory structure created
+
+Command:
+mkdir ProjectWorkspace
+mkdir Documents Reports
+
+Output:
+
+Observation:
+The workspace directory and subdirectories were created successfully. This structure can be used to organize project files and documentation.
+
+
+Directory structure verification: 
+Command: tree 
+Output:
+Observation: tree isn't installed. (The command displays the hierarchy of directories inside the workspace. It confirms that the required folders were created correctly.)
+
+
+Command: ls -R 
+Output:
+
+Observation: The command displays the current permissions, owner, and group information for the ProjectWorkspace directory. The default permissions were assigned according to the system umask settings.
+
+
+
+2. File permissions before and after modification
+
+Command: ls -ld .
+
+Output:
+
+Observation:
+The command displayed the existing permissions, ownership, and group information. The default permissions were assigned automatically according to the system settings.
+
+permission modification:
+Command: chmod 750 .
+
+Output:
+
+Observation:
+The permissions were modified to provide full access to the owner, limited access to the group, and no access to other users. This improves security for project data.
+
+permission verification after modification:
+Command: ls -ld .
+
+Output:
+
+Observation:
+The output confirmed that the permissions were successfully updated to 750. The new settings provide controlled access to the workspace.
+
+3. Ownership details
+
+Command:
+ls -ld .
+
+Output:
+
+Observation:
+The workspace is owned by the user who created it. Ownership determines who can modify permissions and manage the directory contents.
+
+4. Umask value used
+
+Command:
+umask
+
+Output:
+
+Observation:
+The umask value controls default permissions for newly created files and directories. It helps improve security by restricting unnecessary access.
+
+
+5. Explanation of how permissions protect project data
+
+Conclusion:
+
+Permissions protect project data by restricting access to authorized users only. Using appropriate ownership, umask values, and permission settings helps prevent unauthorized viewing or modification of important project files.
+
+Check the screenshots showing permissions and ownership.
