@@ -1,0 +1,69 @@
+Question 1 – Linux Environment Verification
+
+You have joined a company as a Linux support engineer. Before accessing company resources, you must verify your Linux environment and user account details.
+
+Perform the necessary Linux commands and prepare a report containing:
+
+1. Username and groups associated with your account
+
+Command: whoami 
+
+Output: ubuntu
+
+Observations: The whoami command was used to identify the currently logged-in user. The command returned "ubuntu", confirming that the active account on the system is the ubuntu user. This helps verify the identity of the user before accessing system resources. The command executed successfully and displayed the expected username.
+
+2. Current shell being used
+Command: echo $SHELL
+Output: /bin/bash
+Observation: The echo $SHELL command displays the default shell assigned to the current user. The output shows that the Bash shell is being used. Bash is the standard command-line interpreter in many Linux distributions and is responsible for processing user commands.
+
+3. Current working directory
+Command: pwd
+Output: /home/ubuntu
+Observation: The pwd command prints the absolute path of the current working directory. The output indicates that the current workspace is the home directory of the ubuntu user. This helps verify the user's location within the Linux file system.
+
+4. List of files and directories in your workspace
+Command: ls -la
+Output: 
+
+total 12
+drwxr-xr-x 17 ubuntu ubuntu 4096 Jun 21 17:00 .
+drwxr-xr-x  3 root root 4096 Jun 21 16:55 ..
+-rw-------  1 ubuntu ubuntu  123 Jun 21 17:00 .bash_history
+-rw-r--r--  1 ubuntu ubuntu  220 Apr  4  2023 .bash_logout
+-rw-r--r--  1 ubuntu ubuntu 3771 Apr  4  2023 .bashrc
+drwx------  3 ubuntu ubuntu 4096 Jun 21 16:59 .cache
+drwx------  6 ubuntu ubuntu 4096 Jun 21 16:59 .config
+drwxr-xr-x  2 ubuntu ubuntu 4096 Jun 21 16:59 Desktop
+drwxr-xr-x  2 ubuntu ubuntu 4096 Jun 21 16:59 Documents
+drwxr-xr-x  2 ubuntu ubuntu 4096 Jun 21 16:59 Downloads
+-rw-r--r--  1 ubuntu ubuntu  807 Apr  4  2023 .profile
+drwx------  3 ubuntu ubuntu 4096 Jun 21 16:59 .local
+drwxr-xr-x  2 ubuntu ubuntu 4096 Jun 21 16:59 Music
+drwxr-xr-x  2 ubuntu ubuntu 4096 Jun 21 16:59 Pictures
+drwxr-xr-x  2 ubuntu ubuntu 4096 Jun 21 16:59 Public
+drwxr-xr-x  2 ubuntu ubuntu 4096 Jun 21 16:59 Templates
+drwxr-xr-x  2 ubuntu ubuntu 4096 Jun 21 16:59 Videos
+drwx------  2 ubuntu ubuntu 4096 Jun 21 16:59 snap
+
+
+Observation: The ls -la command displays all files and directories, including hidden files. It also provides detailed information such as permissions, ownership, file sizes, and modification dates. This command helps examine the contents of the current workspace.
+
+5. Network connectivity verification result
+Command:
+ping -c 4 google.com
+
+Output:
+PING google.com (192.178.158.100) 56(84) bytes of data.
+64 bytes from lcdels-in-f100.1e100.net (192.178.158.100): icmp_seq=1 ttl=115 time=90.4 ms
+64 bytes from lcdels-in-f100.1e100.net (192.178.158.100): icmp_seq=2 ttl=115 time=41.1 ms
+64 bytes from lcdels-in-f100.1e100.net (192.178.158.100): icmp_seq=3 ttl=115 time=411 ms
+64 bytes from lcdels-in-f100.1e100.net (192.178.158.100): icmp_seq=4 ttl=115 time=337 ms
+
+--- google.com ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3017ms
+rtt min/avg/max/mdev = 41.095/220.031/411.372/157.443 ms
+
+
+Observation:
+The ping command was used to test connectivity between the system and an external host. The command sends network packets to Google's servers and measures the response time. Receiving replies confirms that the system has working network connectivity and internet access.
