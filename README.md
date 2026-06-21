@@ -67,7 +67,7 @@ Folder:
 - Question5/
 
 
-## Software Used
+## Used
 
 - Ubuntu Linux
 - Bash Shell
