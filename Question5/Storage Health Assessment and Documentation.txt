@@ -1,0 +1,99 @@
+Question 5 – Storage Health Assessment and Documentation
+
+Available storage devices:
+Command: lsblk
+
+coder@Ubuntu:~$ lsblk
+Output:
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+loop0    7:0    0 63.3M  1 loop /snap/core22/2411
+loop1    7:1    0 63.3M  1 loop /snap/core22/2463
+loop2    7:2    0 74.5M  1 loop /snap/firefox/7766
+loop3    7:3    0 74.5M  1 loop /snap/firefox/7803
+loop4    7:4    0  331M  1 loop /snap/gnome-42-2204/247
+loop5    7:5    0  331M  1 loop /snap/gnome-42-2204/252
+loop6    7:6    0  219M  1 loop /snap/gnome-3-38-2004/143
+loop7    7:7    0  219M  1 loop /snap/gnome-3-38-2004/144
+loop8    7:8    0  335M  1 loop /snap/gtk-common-themes/1535
+loop9    7:9    0  335M  1 loop /snap/gtk-common-themes/1536
+loop10   7:10   0  335M  1 loop /snap/gtk-common-themes/1537
+loop11   7:11   0  335M  1 loop /snap/gtk-common-themes/1538
+loop12   7:12   0  335M  1 loop /snap/gtk-common-themes/1539
+sda      8:0    0   50G  0 disk 
+├─sda1   8:1    0  1.9G  0 part /boot
+└─sda2   8:2    0 48.1G  0 part /
+sr0     11:0    1  102M  0 rom  /media/coder/VBox_GAs_7.2.10
+
+
+Observation: The lsblk command displayed all storage devices and partitions available on the system; the primary disk is /dev/sda with a total size of 50 GB, divided into a boot partition (/dev/sda1) and a root partition (/dev/sda2). Several loop devices were also present, which are used by Snap packages. The output confirmed that the system storage devices were detected correctly. It provided information about disk names, sizes, and partition layouts; this helps identify the storage resources available for deployment.
+
+
+Mounted file systems and disk usage statistics:
+Command: df -h
+
+coder@Ubuntu:~$ df -h
+Output:
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           392M  1.6M  390M   1% /run
+/dev/sda2        49G  6.9G   40G  15% /
+tmpfs             2.0G     0   2.0G   0% /dev/shm
+tmpfs             5.0M  8.0K   5.0M   1% /run/lock
+mysharedfolder   459G  326G  133G  72% /media/sf_mysharedfolder
+tmpfs           392M  136K  392M   1% /run/user/1000
+/dev/sr0         52M   52M     0 100% /media/coder/VBox_GAs_7.2.10
+
+Observation: The df -h command displayed mounted file systems and their disk usage statistics in a human-readable format. The root file system (/dev/sda2) has a total capacity of 49 GB, with approximately 6.9 GB used and 40 GB available. The utilization of 15% indicates that sufficient storage space is available for deploying additional applications and storing data. The output showed total space, used space, available space, and utilization percentages for each mounted file system.
+
+
+Inode utilization: 
+Command: df -i
+
+coder@Ubuntu:~$ df -i
+Output:
+Filesystem       Inodes   IUsed   IFree IUse% Mounted on
+tmpfs            501090    1068  500022    1% /run
+/dev/sda2       3276800  174280 3102520    6% /
+tmpfs            501090       1  501089    1% /dev/shm
+tmpfs            501090       4  501086    1% /run/lock
+mysharedfolder     1000 -9990000 10000000    - /media/sf_mysharedfolder
+tmpfs            100218     172  100046    1% /run/user/1000
+/dev/sr0              0       0       0    - /media/coder/VBox_GAs_7.2.10
+
+Observation: The df -i command displayed inode usage information for mounted file systems. Inodes store metadata about files and directories. The root partition (/dev/sda2) has used only 174,280 inodes out of 3,276,800 available, resulting in approximately 6% inode utilization. This indicates that inode availability is healthy and unlikely to cause file creation issues. Monitoring inode utilization helps prevent issues where file creation fails despite available disk space.
+
+
+Mounted file system details: 
+Command: mount | head
+
+coder@Ubuntu:~$ mount | head
+Output:
+sysfs on /sys type sysfs (rw,nosuid,nodev,noexec,relatime)
+proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
+udev on /dev type devtmpfs (rw,nosuid,relatime,size=1961552k,nr_inodes=490388,mode=755,inode64)
+devpts on /dev/pts type devpts (rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000)
+tmpfs on /run type tmpfs (rw,nosuid,nodev,noexec,relatime,size=400872k,mode=755,inode64)
+
+/dev/sda2 on / type ext4 (rw,relatime)
+securityfs on /sys/kernel/security type securityfs (rw,nosuid,nodev,noexec,relatime)
+tmpfs on /dev/shm type tmpfs (rw,nosuid,nodev,inode64)
+tmpfs on /run/lock type tmpfs (rw,nosuid,nodev,noexec,relatime,size=5120k,inode64)
+cgroup2 on /sys/fs/cgroup type cgroup2 (rw,nosuid,nodev,noexec,relatime,nsdelegate,memory_recursiveprot)
+
+Observation: The command displayed the first few mounted file systems and their mount points. This information helps verify how storage resources are organized and accessed by the operating system. The output showed system-critical file systems such as proc, sysfs, tmpfs, and the main ext4 root file system mounted on /. This confirms that the operating system has correctly mounted the required storage resources.
+
+
+Storage health observations: The storage configuration appears healthy and suitable for application deployment. The root partition has a large amount of free space available, with only 15% disk utilization. Inode usage is also low at approximately 6%, indicating that the file system can support a significant number of additional files. No storage shortages or inode exhaustion issues were observed during the assessment.
+
+
+Recommendations for improving storage utilization:
+1. Regularly monitor disk space usage using commands such as df -h to prevent storage shortages.
+2. Remove unnecessary files, logs, and temporary data to prevent storage waste.
+3. Archive or compress old files that are no longer frequently accessed.
+4. Monitor inode utilization in addition to disk space usage.
+5. Implement backups and storage maintenance procedures.
+6. Review Snap packages periodically and remove unused packages to reduce storage consumption.
+
+Conclusion: The storage assessment confirmed that the system's storage resources are functioning correctly and have sufficient capacity for deploying a new application server. The root file system has substantial free space available, and inode utilization remains low. Based on the collected data, the storage environment is healthy and capable of supporting additional workloads. Continued monitoring and maintenance will help ensure efficient storage utilization in the future.
+
+
+Check the screenshots showing vi editor operations and the screenshots of storage-related command outputs.
