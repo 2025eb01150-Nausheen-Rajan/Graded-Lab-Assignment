@@ -1,0 +1,134 @@
+IO investigation report
+
+Question 4 – file access and I/O investigation
+
+Open files identified: 
+Command: lsof
+Output: (can't paste it here or take screenshots of it since it's way too long, but I've attached a file with the output of lsof in it. It's in open_files.txt)
+Observation: The lsof command was used to list files currently opened by processes running on the Linux system. The output showed process IDs, users, file descriptors, and associated files. Some entries displayed "Permission denied" because the current user does not have permission to view certain system process information. The command successfully demonstrated how Linux tracks open files and resources used by active processes.
+
+I did execute lsof and have uploaded the output of lsof in open_files.txt. 
+
+coder@Ubuntu:~$ lsof > open_files.txt
+coder@Ubuntu:~$ head open_files.txt
+COMMAND     PID   TID TASKCMD USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+systemd       1         root   cwd   unknown             /proc/1/cwd (read
+link: Permission denied)
+systemd       1         root   rtd   unknown             /proc/1/root (rea
+dlink: Permission denied)
+systemd       1         root   txt   unknown             /proc/1/exe (read
+systemd       1         root   NOFD  unknown             /proc/1/fd (opend
+ir: Permission denied)
+kthreadd      2         root   cwd   unknown             /proc/2/cwd (read
+link: Permission denied)
+kthreadd      2         root   rtd   unknown             /proc/2/root (rea
+dlink: Permission denied)
+kthreadd      2         root   txt   unknown             /proc/2/exe (read
+kthreadd      2         root   NOFD  unknown             /proc/2/fd (opend
+pool_work     3         root   cwd   unknown             /proc/3/cwd (read
+link: Permission denied)
+
+
+Executed the following command so I could take a screenshot of it and paste its output: 
+Command: lsof | head
+
+coder@Ubuntu:~$ lsof | head
+Output: 
+COMMAND     PID   TID TASKCMD  USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+systemd       1         root   cwd   unknown                /proc/1/cwd (read)
+link: Permission denied)
+systemd       1         root   rtd   unknown                /proc/1/root (read)
+dlink: Permission denied)
+systemd       1         root   txt   unknown                /proc/1/exe (read)
+link: Permission denied)
+systemd       1         root   NOFD  unknown                /proc/1/fd (opend)
+ir: Permission denied)
+kthreadd      2         root   cwd   unknown                /proc/2/cwd (read)
+link: Permission denied)
+kthreadd      2         root   rtd   unknown                /proc/2/root (read)
+dlink: Permission denied)
+kthreadd      2         root   txt   unknown                /proc/2/exe (read)
+link: Permission denied)
+kthreadd      2         root   NOFD  unknown                /proc/2/fd (opend)
+ir: Permission denied)
+pool_work     3         root   cwd   unknown                /proc/3/cwd (read)
+link: Permission denied)
+
+Observation: The lsof output was very large, so the head command was used to display only the first few lines. The output showed several system processes and the files associated with them. This provided a manageable view of open files while still demonstrating the functionality of the lsof command.
+
+
+File descriptor observations: 
+Command: ls -l /proc/$$/fd
+
+coder@Ubuntu:~$ ls -l /proc/$$/fd
+Output: 
+total 0
+lrwx------ 1 coder coder 64 Jun 21 15:40 0 -> /dev/pts/0
+lrwx------ 1 coder coder 64 Jun 21 15:40 1 -> /dev/pts/0
+lrwx------ 1 coder coder 64 Jun 21 15:40 2 -> /dev/pts/0
+lrwx------ 1 coder coder 64 Jun 21 15:40 255 -> /dev/pts/0
+
+Observation: The command displayed the file descriptors associated with the current shell process. File descriptor 0 represents standard input (stdin), descriptor 1 represents standard output (stdout), and descriptor 2 represents standard error (stderr). All three descriptors were connected to the current terminal session (/dev/pts/0), showing how Linux manages input and output streams.
+
+
+Output redirection: 
+Command: echo "This is a test message" > output.txt
+
+coder@Ubuntu:~$ echo "This is a test message" > output.txt
+coder@Ubuntu:~$ cat output.txt
+Output: 
+This is a test message
+
+Observation: The output redirection operator (>) redirected the command output into output.txt instead of displaying it on the terminal. The file was created successfully and contained the expected message. This demonstrates how Linux can store command output in files for logging and documentation purposes.
+
+
+Error redirection: 
+Command: ls nonexistentfile 2> error.txt
+
+coder@Ubuntu:~$ ls nonexistentfile 2> error.txt
+coder@Ubuntu:~$ cat error.txt
+Output:
+ls: cannot access 'nonexistentfile': No such file or directory
+
+Observation: The command attempted to access a file that does not exist. The error message was redirected to error.txt using file descriptor 2 (stderr), demonstrating error redirection.
+
+
+Output and error redirection: 
+Command: ls output.txt nonexistentfile > success.txt 2> errors.txt
+
+coder@Ubuntu:~$ ls output.txt nonexistentfile > success.txt 2> errors.txt
+coder@Ubuntu:~$ cat success.txt
+output.txt
+coder@Ubuntu:~$ cat errors.txt
+ls: cannot access 'nonexistentfile': No such file or directory
+
+Observation: The command generated both successful output and an error. Standard output was redirected to success.txt, while the error message was redirected to errors.txt. This demonstrates how Linux can separately manage output and error streams for troubleshooting and logging.
+
+Resource limits observed: 
+Command: ulimit -a
+
+coder@Ubuntu:~$ ulimit -a
+Output: 
+real-time non-blocking time (microseconds, -R) unlimited
+core file size (blocks, -c) 0
+data seg size (kbytes, -d) unlimited
+scheduling priority (-e) 0
+file size (blocks, -f) unlimited
+pending signals (-i) 15326
+max locked memory (kbytes, -l) 501088
+max memory size (kbytes, -m) unlimited
+open files (-n) 1024
+pipe size (512 bytes, -p) 8
+POSIX message queues (bytes, -q) 819200
+real-time priority (-r) 0
+stack size (kbytes, -s) 8192
+cpu time (seconds, -t) unlimited
+max user processes (-u) 15326
+virtual memory (kbytes, -v) unlimited
+file locks (-x) unlimited
+
+Observation: The ulimit command displayed resource limits configured for the current user session. The output showed limits for open files, memory usage, stack size, processes, and other system resources. These limits help prevent excessive resource consumption and improve system stability.
+
+Explanation of how Linux manages file I/O: Linux manages input and output using file descriptors. Every process is automatically assigned three standard file descriptors: standard input (0), standard output (1), and standard error (2). Files, devices, sockets, and pipes are all treated as files and are accessed through file descriptors. Redirection operators such as > and 2> allow output and error streams to be redirected to files instead of being displayed on the terminal, making logging, monitoring, and troubleshooting easier.
+
+Conclusion: The investigation demonstrated how Linux manages open files, file descriptors, redirects output streams, and enforces resource limits. These mechanisms provide efficient and flexible file management for applications and system processes.
