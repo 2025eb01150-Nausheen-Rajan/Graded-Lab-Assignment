@@ -4,66 +4,89 @@ A project team requires a secure workspace for storing project files and documen
 
 I've performed the necessary tasks and prepared a report containing:
 
+
 1. Directory structure created
 
 Commands:
+mkdir -p ~/Question2 
+cd ~/Question2
 mkdir ProjectWorkspace
 cd ProjectWorkspace
 mkdir Documents Reports
 
-Observation: The mkdir command was used to create the ProjectWorkspace directory along with the Documents and Reports subdirectories. The command executed successfully and created the required workspace structure for storing project files and documentation.
-
+Observation: The mkdir command was used to create the ProjectWorkspace directory along with the Documents and Reports subdirectories. The commands executed successfully and created the required directory structure for storing project files and documentation. Organizing files into separate directories helps improve project management and file accessibility.
 
 Directory structure verification: 
 Command: tree 
-Output: Command 'tree' not found, but can be installed with:
+
+coder@Ubuntu:~/Question2/ProjectWorkspace$ tree
+Output:
+Command 'tree' not found, but can be installed with:
 sudo snap install tree  # version 2.1.3+pkg-5852, or
 sudo apt install tree   # version 2.1.1-2ubuntu3.24.04.2
 See 'snap info tree' for additional versions.
-Observation: tree isn't installed, so I used ls -R instead. (The command displays the hierarchy of directories inside the workspace. It confirms that the required folders were created correctly.)
+Observation: The tree command was not available on the system because the package was not installed. Therefore, the ls -R command was used as an alternative to display the directory hierarchy recursively. This provided the necessary verification of the workspace structure.
 
-Command: ls -R 
+Command: ls -R
+coder@Ubuntu:~/Question2/ProjectWorkspace$ ls -R
 Output: 
 .:
-Documents Reports
+Documents  Reports
 
-./Documents: 
+./Documents:
 
 ./Reports:
-Observation: The ls -R command displayed the contents of the current directory and all subdirectories recursively. The output confirmed that the Documents and Reports folders were created successfully inside the workspace.
+
+Observation: The ls -R command displayed the contents of the current directory and all subdirectories recursively. The output confirmed that the Documents and Reports directories were created successfully inside ProjectWorkspace. This verified that the required workspace structure was correctly configured.
 
 
 2. File permissions before and after modification
 
-permissions before modification: 
+Permissions before modification: 
 Command: ls -ld .
-Output: drwxrwxr-x 4 ubuntu ubuntu 80 Jun 21 12:58 .
-Observation: The ls -ld command displayed the directory permissions, owner, and group information. The permissions drwxrwxr-x indicate that the owner and group had read, write, and execute permissions, while other users had read and execute permissions only.
+coder@Ubuntu:~/Question2/ProjectWorkspace$ ls -ld .
+Output: drwxrwxr-x 4 coder coder 4096 Jun 21 19:17 
+Observation: The ls -ld command displayed the permissions, owner, and group associated with the workspace directory. The permission string drwxrwxr-x indicates that the owner and group had read, write, and execute permissions, while other users had read and execute permissions only. These permissions were assigned according to the system's default configuration and umask value.
+
+Ownership details: 
+Command: ls -ld .
+Output: drwxrwxr-x 4 coder coder 4096 Jun 21 19:17 
+Observation: The output showed that the directory owner is "coder" and the associated group is also "coder". Ownership determines which user has control over the directory and can modify permissions. Proper ownership management is important for maintaining file security and access control.
+
+Umask value used:
+Command: umask
+Output: 0002
+Observation: The umask value of 0002 was displayed. This value affects the default permissions assigned to newly created files and directories by removing specific permission bits. It allows group write access while restricting certain permissions for security purposes.
+
 
 permission modification:
 Command: chmod 750 .
-Observation: The chmod 750 command was used to modify the directory permissions. This command grants full access to the owner, read and execute access to the group, and removes all permissions from other users.
+Observation: The chmod 750 command was used to modify the permissions of the ProjectWorkspace directory. This configuration grants full access to the owner, read and execute access to members of the group, and no access to other users. The command executed successfully and improved the security of the workspace.
+
 
 permissions after modification:
 Command: ls -ld .
-Output: drwxr-x--- 4 ubuntu ubuntu 80 Jun 21 12:58 .
-Observation: The output confirmed that the permissions were successfully changed to drwxr-x---. The owner has full access, the group has limited access, and other users cannot access the directory.
+Output: drwxr-x--- 4 coder coder 4096 Jun 21 19:17
+Observation: The output confirmed that the permissions were successfully changed to drwxr-x---. The owner retains full control of the directory, group members have limited access, and all access for other users has been removed. This configuration provides stronger protection for project data.
 
-3. Ownership details
 
-Command: ls -ld .
-Output: drwxrwxr-x 4 ubuntu ubuntu 80 Jun 21 12:58 .
-Observation: The ls -ld command showed that the owner of the directory is ubuntu and the associated group is also ubuntu. Ownership information is important because it determines which users can manage files and modify permissions within the workspace.
+Created a file: 
+Commands: 
+touch Documents/project_plan.txt 
+ls -l Documents
 
-4. Umask value used
+coder@Ubuntu:~/Question2/ProjectWorkspace$ touch Documents/project_plan.txt
+coder@Ubuntu:~/Question2/ProjectWorkspace$ ls -l Documents
 
-Command: umask
-Output: 0002
-Observation: The umask value of 0002 indicates that newly created files and directories will have group write permissions enabled by default. The umask controls the default permissions assigned to newly created resources and helps enforce security policies.
+Output:
+total 0
+-rw-rw-r-- 1 coder coder 0 Jun 21 19:22 project_plan.txt
 
-5. Explanation of how permissions protect project data
+Observation: The touch command created an empty file named project_plan.txt inside the Documents directory. The ls -l command verified that the file was created successfully and displayed its permissions, ownership, and size information. This demonstrates how project-related documents can be stored within the secure workspace.
 
-Conclusion: Linux permissions help protect project data by restricting access to authorized users. By changing the workspace permissions to 750, only the owner has full control, group members have limited access, and other users are completely denied access. This reduces the risk of unauthorized viewing, modification, or deletion of project files.
+
+5. Explanation of how permissions protect project data 
+Conclusion: Linux permissions protect project data by controlling which users can read, modify, or execute files and directories. By assigning permission 750 to the workspace, only the owner has full access, group members have limited access, and all other users are denied access. This helps prevent unauthorized viewing, modification, or deletion of important project resources and improves overall system security.
 
 
 Check the screenshots showing permissions and ownership.
