@@ -4,7 +4,7 @@ Question 4 – file access and I/O investigation
 
 Open files identified: 
 Command: lsof
-Output: (can't paste it here or take screenshots of it since it's way too long, but I've attached a file with the output of lsof in it. It's in open_files.txt)
+Output: (can't paste it here or take screenshots of it since it's way too long, but I've attached a file with the output of lsof in it. It's in open_files.txt. path: Question4/screenshots/open_files.txt -> view raw)
 Observation: The lsof command was used to list files currently opened by processes running on the Linux system. The output showed process IDs, users, file descriptors, and associated files. Some entries displayed "Permission denied" because the current user does not have permission to view certain system process information. The command successfully demonstrated how Linux tracks open files and resources used by active processes.
 
 I did execute lsof and have uploaded the output of lsof in open_files.txt. 
